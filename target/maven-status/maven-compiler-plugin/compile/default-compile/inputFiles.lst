@@ -1,0 +1,14 @@
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\http\HttpResult.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\service\InformationService.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\http\HttpClientConfig.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\MainApplication.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\controller\SearchController.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\bean\CommonQueryBean.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\EntityUtil.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\domain\Information.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\redis\RedisUtil.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\utils\http\HttpClientUtil.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\job\NewJob.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\service\InformationServiceImpl.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\config\RedisConfig.java
+D:\ShixunSSM\springboot02-search\src\main\java\com\nn\search\dao\InformationDao.java

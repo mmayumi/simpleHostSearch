@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nn.search.dao.InformationDao">
+
+	<resultMap id="Information" type="com.nn.search.domain.Information" >
+		<result column="info_src" property="infoSrc"/>
+		<result column="info_text" property="infoText"/>
+		<result column="info_image" property="infoImage"/>
+		<result column="info_url" property="infoUrl"/>
+		<result column="single_tag" property="singleTag"/>
+		<result column="time" property="time"/>
+		<result column="create_time" property="createTime"/>
+		<result column="update_time" property="updateTime"/>
+		<result column="is_enabled" property="isEnabled"/>
+		<result column="is_deleted" property="isDeleted"/>
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		id,
+		info_src,
+		info_text,
+		info_image,
+		info_url,
+		single_tag,
+		time,
+		create_time,
+		update_time,
+		is_enabled,
+		is_deleted
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="Information" parameterType="java.lang.Long">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM information
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		 DELETE FROM information
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.nn.search.domain.Information" >
+		 INSERT INTO information
+ 		(
+			 id,
+			 info_src,
+			 info_text,
+			 info_image,
+			 info_url,
+			 single_tag,
+			 time,
+			 create_time,
+			 update_time,
+			 is_enabled,
+			 is_deleted
+		) 
+		 VALUES 
+ 		(
+			 #{id},
+			 #{infoSrc},
+			 #{infoText},
+			 #{infoImage},
+			 #{infoUrl},
+			 #{singleTag},
+			 #{time},
+			 #{createTime},
+			 #{updateTime},
+			 #{isEnabled},
+			 #{isDeleted}
+ 		) 
+		 <selectKey keyProperty="id" resultType="Long" order="AFTER">
+			 select LAST_INSERT_ID()
+		 </selectKey>
+	</insert>
+	<insert id="insertIfNotExist" parameterType="com.nn.search.domain.Information">
+		INSERT INTO information
+		(
+		info_src,
+		info_text,
+		info_image,
+		info_url,
+		single_tag,
+		time,
+		is_enabled,
+		is_deleted,
+		create_time,
+		update_time
+		)
+		select
+		#{infoSrc},
+		#{infoText},
+		#{infoImage},
+		#{infoUrl},
+		#{singleTag},
+		#{time},
+		1,
+		0,
+		#{createTime},
+		#{updateTime}
+		from dual
+		where not exists (select * from information where information.single_tag = #{singleTag})
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.nn.search.domain.Information" >
+		 UPDATE information
+ 		 <set> 
+			<if test="infoSrc != null and infoSrc != ''">
+				 info_src = #{infoSrc},
+			</if>
+			<if test="infoText != null and infoText != ''">
+				 info_text = #{infoText},
+			</if>
+			<if test="infoImage != null and infoImage != ''">
+				 info_image = #{infoImage},
+			</if>
+			<if test="infoUrl != null and infoUrl != ''">
+				 info_url = #{infoUrl},
+			</if>
+			<if test="singleTag != null and singleTag != ''">
+				 single_tag = #{singleTag},
+			</if>
+			<if test="time != null and time != ''">
+				 time = #{time},
+			</if>
+			<if test="createTime != null">
+				 create_time = #{createTime},
+			</if>
+			<if test="updateTime != null">
+				 update_time = #{updateTime},
+			</if>
+			<if test="isEnabled != null">
+				 is_enabled = #{isEnabled},
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted = #{isDeleted},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- list4Page 分页查询-->
+	<select id="list4Page" resultMap="Information">
+		 SELECT 
+		 <include refid="Base_Column_List" />
+		 from information
+ 		 where 1=1  
+		<if test="record.id != null">
+			 and id = #{record.id} 
+		</if>
+		<if test="record.infoSrc != null and record.infoSrc != ''">
+			 and info_src = #{record.infoSrc} 
+		</if>
+		<if test="record.infoText != null and record.infoText != ''">
+			 and info_text = #{record.infoText} 
+		</if>
+		<if test="record.infoImage != null and record.infoImage != ''">
+			 and info_image = #{record.infoImage} 
+		</if>
+		<if test="record.infoUrl != null and record.infoUrl != ''">
+			 and info_url = #{record.infoUrl} 
+		</if>
+		<if test="record.singleTag != null and record.singleTag != ''">
+			 and single_tag = #{record.singleTag} 
+		</if>
+		<if test="record.time != null and record.time != ''">
+			 and time = #{record.time} 
+		</if>
+		<if test="record.createTime != null">
+			 and create_time = #{record.createTime} 
+		</if>
+		<if test="record.updateTime != null">
+			 and update_time = #{record.updateTime} 
+		</if>
+		<if test="record.isEnabled != null">
+			 and is_enabled = #{record.isEnabled} 
+		</if>
+		<if test="record.isDeleted != null">
+			 and is_deleted = #{record.isDeleted} 
+		</if>
+		<if test="commonQueryParam != null">
+			<if test="commonQueryParam.order != null ">
+				 order by #{commonQueryParam.order}			<if test="commonQueryParam.sort != null ">				 #{commonQueryParam.sort}			</if>
+			</if>
+			<if test="commonQueryParam.start != null  and commonQueryParam.pageSize != null">
+				 limit #{commonQueryParam.start}, #{commonQueryParam.pageSize}
+			</if>
+		</if>
+	</select>
+	<!-- count 总数-->
+	<select id="count" resultType="long">
+		 SELECT 
+		 count(1) 
+		 from information
+ 		 where 1=1  
+		<if test="id != null">
+			 and id = #{id} 
+		</if>
+		<if test="infoSrc != null and infoSrc != ''">
+			 and info_src = #{infoSrc} 
+		</if>
+		<if test="infoText != null and infoText != ''">
+			 and info_text = #{infoText} 
+		</if>
+		<if test="infoImage != null and infoImage != ''">
+			 and info_image = #{infoImage} 
+		</if>
+		<if test="infoUrl != null and infoUrl != ''">
+			 and info_url = #{infoUrl} 
+		</if>
+		<if test="singleTag != null and singleTag != ''">
+			 and single_tag = #{singleTag} 
+		</if>
+		<if test="time != null and time != ''">
+			 and time = #{time} 
+		</if>
+		<if test="createTime != null">
+			 and create_time = #{createTime} 
+		</if>
+		<if test="updateTime != null">
+			 and update_time = #{updateTime} 
+		</if>
+		<if test="isEnabled != null">
+			 and is_enabled = #{isEnabled} 
+		</if>
+		<if test="isDeleted != null">
+			 and is_deleted = #{isDeleted} 
+		</if>
+	</select>
+	<!-- list 查询-->
+	<select id="list" resultMap="Information">
+		 SELECT 
+		 <include refid="Base_Column_List" />
+		 from information
+ 		 where 1=1  
+		<if test="id != null">
+			 and id = #{id} 
+		</if>
+		<if test="infoSrc != null and infoSrc != ''">
+			 and info_src = #{infoSrc} 
+		</if>
+		<if test="infoText != null and infoText != ''">
+			 and info_text = #{infoText} 
+		</if>
+		<if test="infoImage != null and infoImage != ''">
+			 and info_image = #{infoImage} 
+		</if>
+		<if test="infoUrl != null and infoUrl != ''">
+			 and info_url = #{infoUrl} 
+		</if>
+		<if test="singleTag != null and singleTag != ''">
+			 and single_tag = #{singleTag} 
+		</if>
+		<if test="time != null and time != ''">
+			 and time = #{time} 
+		</if>
+		<if test="createTime != null">
+			 and create_time = #{createTime} 
+		</if>
+		<if test="updateTime != null">
+			 and update_time = #{updateTime} 
+		</if>
+		<if test="isEnabled != null">
+			 and is_enabled = #{isEnabled} 
+		</if>
+		<if test="isDeleted != null">
+			 and is_deleted = #{isDeleted} 
+		</if>
+	</select>
+	<select id="match" resultMap="Information">
+		select <include refid="Base_Column_List"></include>
+		    from information
+         where info_text like concat('%',#{word},'%')
+	</select>
+</mapper>
